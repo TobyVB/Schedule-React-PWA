@@ -34,13 +34,93 @@ export default function Schedule() {
 
     return (
       <span>
-        {now.toLocaleTimeString()}
-        {/* {now.toLocaleDateString()} */}
+        {now.getHours() > 12 ? now.getHours() - 12 : now.getHours()}:
+        {now.getMinutes() === 0 ? "00" : now.getMinutes()}
       </span>
     );
   }
 
-  //   console.log(appointments.practitioner);
+  // find  appointment with earliest starting time hour for a given doctor
+  // That will be the starting time of the time-index;
+  // find the lastest appoint for that doctor and get the ending time.
+  // if ending minutes are at 0 set that as the ending hour
+  // if ending minutes > 0, that hour+1 will be the ending hour
+
+  // create timeIndex hour makerfunction
+  // create timeIndex day makerfunction
+
+  // the day maker function will call the timeIndex hour maker function
+  // for endingHour-startingHour times
+  const arrAppointments = appointments
+    .filter((elm) => elm.day === day)
+    .sort(function (a, b) {
+      let n = a.startTimeH - b.startTimeH;
+      if (n !== 0) {
+        return n;
+      }
+      return a.startTimeM - b.startTimeM;
+    });
+
+  function findSmallestValue(objects, key) {
+    let smallestValue = Number.MAX_VALUE; // start with the largest possible number
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i][key] < smallestValue) {
+        smallestValue = objects[i][key];
+      }
+    }
+    return smallestValue;
+  }
+
+  function findLargestValue(objects, key) {
+    let largestValue = Number.MIN_VALUE; // start with the smallest possible number
+    for (let i = 0; i < objects.length; i++) {
+      if (objects[i][key] > largestValue) {
+        largestValue = objects[i][key];
+      }
+    }
+    return largestValue;
+  }
+  function createWholeNumberArray(startNum, endNum) {
+    const result = [];
+    for (let i = startNum; i <= endNum; i++) {
+      if (Number.isInteger(i)) {
+        result.push(i);
+      }
+    }
+    return result;
+  }
+
+  const startHour = findSmallestValue(arrAppointments, "startTimeH");
+  const endHour = findLargestValue(arrAppointments, "startTimeH") + 1;
+  const dailyTimeIndex = createWholeNumberArray(startHour, endHour);
+
+  function Gap(props) {
+    const prev = props.prev;
+    const current = props.current;
+    const index = props.index;
+    const arrIndex = props.thisIndex;
+
+    console.log("this " + props.cp + " " + current);
+    console.log("prev " + props.pp + " " + prev);
+    console.log("index " + index);
+    if (index === 0 && current === 0) {
+      return;
+    } else if (index === 0 && current > 0) {
+      const gapSize = current * 1.666 * 2;
+      return <div style={{ height: `${gapSize}px` }}></div>;
+    }
+    if (
+      arrAppointments[arrIndex].startTimeM ===
+      arrAppointments[arrIndex - 1].endTimeM
+    ) {
+      return;
+    }
+    if (prev < current) {
+      const gapSize = (current - prev) * 1.666 * 2;
+      return <div style={{ height: `${gapSize}px` }}>{props.thisIndex}</div>;
+    }
+  }
+
   return (
     <div>
       <h1>Greetings, {appointments[0].practitioner}</h1>
@@ -61,41 +141,68 @@ export default function Schedule() {
           </button>
         </div>
         <h1>{dayName}</h1>
-        {appointments
-          .filter((elm) => elm.day === day)
-          .map((appointment, idx) => {
-            return (
-              <div className="appointment-container">
-                <div className="time-index">
-                  <p>
-                    <Time
-                      hour={appointment.startTimeH}
-                      minute={appointment.startTimeM}
-                    />{" "}
-                  </p>
-                </div>
-                <div className="appointment" key={idx}>
-                  <div
-                    style={{
-                      margin: "1em 0",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Time
-                      hour={appointment.startTimeH}
-                      minute={appointment.startTimeM}
-                    />{" "}
-                    -
-                    <Time
-                      hour={appointment.endTimeH}
-                      minute={appointment.endTimeM}
-                    />
-                  </div>
-                  <p style={{ fontWeight: "bold" }}>{appointment.type}</p>
-                  <p>{appointment.patient}</p>
 
-                  <p>{appointment.duration} minutes</p>
+        {dailyTimeIndex &&
+          dailyTimeIndex.map((ti, idx) => {
+            return (
+              <div key={idx} className="time-index">
+                <div className="time-panel">
+                  <Time hour={8 + idx} minute={0} />
+                </div>
+                <div style={{ width: "100%", padding: "0 .5em" }}>
+                  {arrAppointments
+                    .filter((elem) => elem.startTimeH === 8 + idx)
+                    .map((appointment, idx2) => {
+                      return (
+                        <>
+                          <Gap
+                            thisIndex={arrAppointments.findIndex(
+                              (obj) =>
+                                obj.startTimeH === appointment.startTimeH &&
+                                obj.startTimeM === appointment.startTimeM &&
+                                obj.day === appointment.day
+                            )}
+                            prev={
+                              idx2 > 0 && arrAppointments[idx2 - 1].endTimeM
+                            }
+                            current={appointment.startTimeM}
+                            index={idx2}
+                            cp={appointment.patient}
+                            pp={
+                              idx2 > 0
+                                ? arrAppointments[idx2 - 1].patient
+                                : "no patient"
+                            }
+                          />
+                          <div
+                            className="appointment-container"
+                            style={{
+                              height: `${appointment.duration * 1.666 * 2}px`,
+                              width: "100%",
+                            }}
+                            key={idx2}
+                          >
+                            <div className="appointment">
+                              <p>{appointment.type}</p>
+                              <div>
+                                <p>{appointment.patient}</p>
+                                <span style={{ display: "flex" }}>
+                                  <Time
+                                    hour={appointment.startTimeH}
+                                    minute={appointment.startTimeM}
+                                  />
+                                  -
+                                  <Time
+                                    hour={appointment.endTimeH}
+                                    minute={appointment.endTimeM}
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
                 </div>
               </div>
             );
