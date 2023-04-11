@@ -1,24 +1,23 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login";
 import Schedule from "./pages/Schedule";
-import Navbar from "./components/Navbar";
+import SharedLayout from "./layouts/SharedLayout";
 
-function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Navbar />
-        <div className="content">
-          <Routes>
-            <Route index element={<Login />} />
-            <Route path="schedule" element={<Schedule />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </>
-  );
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<SharedLayout />}>
+      <Route index element={<Login />} />
+      <Route path="/schedule/:email" element={<Schedule />}></Route>
+    </Route>
+  )
+);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;
