@@ -175,22 +175,17 @@ input {
 .color-btns-container {
   display: flex;
   justify-content: center;
-  gap: 1em;
+  gap: 2em;
   padding: 1em;
 }
 .color-btns-container button {
-  font-size: 1.25rem;
+  font-size: 1rem;
+  margin-top: -1.5em;
   background: rgb(0, 164, 182);
   border: none;
   color: white;
-  padding: 0.5em 1em;
-  border-radius: 1em;
-}
-.selected {
-  margin-top: -7px;
-}
-.chosen-colors {
-  background: gray;
+  padding: 1em 1.5em;
+  border-radius: 5em;
 }
 @media screen and (max-width: 700px) {
   h1 {
@@ -248,4 +243,11 @@ input {
     color: rgba(0, 164, 182, 1);
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   }
+}
+.types-color {
+  box-shadow: inset -5px 0px 2px rgba(0, 0, 0, 0.1),
+    inset 5px 0px 2px rgba(0, 0, 0, 0.1);
+}
+.types-color::-webkit-scrollbar {
+  display: none;
 }

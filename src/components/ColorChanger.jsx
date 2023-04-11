@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import parse from "html-react-parser";
 
 export default function ColorChanger(props) {
@@ -38,29 +38,113 @@ export default function ColorChanger(props) {
     console.log(props.mgrState.oColors[0]);
   }
 
+  const divRef = useRef(null);
+  const scrollIntervalRef = useRef(null);
+
+  const [updater, setUpdater] = useState(false);
+
+  const [centeredIndex, setCenteredIndex] = useState(null);
+
+  function scroller() {
+    const interval = setInterval(() => {
+      setUpdater((prev) => !prev);
+    }, 1000);
+    return () => clearInterval(interval);
+  }
+
+  function letColorSet() {
+    setSelected(centeredIndex);
+  }
+
+  const [firstType, setFirstType] = useState("");
+  const [lastType, setLastType] = useState("");
+
+  useEffect(() => {
+    const divElement = divRef.current;
+    const center = divElement.offsetWidth / 2;
+    const childElements = divElement.children;
+    let centeredIndex = null;
+
+    for (let i = 0; i < childElements.length; i++) {
+      const element = childElements[i];
+      const offsetLeft = element.offsetLeft;
+      const elementWidth = element.offsetWidth;
+      const elementCenter = offsetLeft + elementWidth / 2;
+
+      if (elementCenter > center + divElement.scrollLeft) {
+        centeredIndex = i;
+        break;
+      }
+      const first = childElements[0];
+      const last = childElements[types.length - 1];
+
+      // MAKING A WAY TO DETERMINE IF USE HAS SCROLLED TO BEGGINNING OR END SO
+      // THE EITHER THE FIRST OR LAST LITTLE SQUARES CAN ANIMATE TO SHOW YOU'RE
+      // AT THE END
+      //     setFirstType("")
+      //     setLastType("")
+      //   if (last > divElement.offsetWidth - 20) {
+      //     setLastType("lastType");
+      //   } else if (first)
+    }
+
+    if (centeredIndex === null) {
+      centeredIndex = childElements.length - 1;
+    }
+
+    setCenteredIndex(centeredIndex);
+  }, [updater]);
+
   return (
     <div className="color-changer-container">
       <div className="color-changer">
-        <p>color slots</p>
-        <div style={{ display: "flex", gap: ".5em", margin: "1em 0 1em 1em" }}>
-          {props.mgrState &&
-            types.map((type, idx) => {
-              return (
-                <div
-                  onClick={() => setSelected(idx)}
-                  className={`${
-                    selected === idx
-                      ? "selected chosen-colors"
-                      : " chosen-colors"
-                  }`}
-                  style={{
-                    height: "30px",
-                    width: "30px",
-                    background: props.mgrState.colors[idx],
-                  }}
-                ></div>
-              );
-            })}
+        <p style={{ textAlign: "center", fontWeight: "500" }}>
+          {types[centeredIndex]}
+        </p>
+        <div
+          style={{
+            width: "150px",
+            margin: "0 auto",
+          }}
+        >
+          <div
+            className="types-color"
+            onMouseLeave={() => letColorSet()}
+            onScroll={() => scroller()}
+            ref={divRef}
+            style={{
+              overflowX: "scroll",
+              whiteSpace: "nowrap",
+              display: "flex",
+              gap: "50px",
+              padding: "0 50px",
+              scrollBehavior: "linear",
+              scrollSnapType: "x mandatory",
+              scrollbars: "none",
+            }}
+          >
+            {props.mgrState &&
+              types.map((type, idx) => {
+                return (
+                  <div
+                    className={
+                      idx === 0
+                        ? { firstType }
+                        : idx === types.length - 1
+                        ? { lastType }
+                        : ""
+                    }
+                    onClick={() => setSelected(idx)}
+                    style={{
+                      scrollSnapAlign: "center",
+                      minHeight: "50px",
+                      minWidth: "50px",
+                      background: props.mgrState.colors[idx],
+                    }}
+                  ></div>
+                );
+              })}
+          </div>
         </div>
 
         <div className="choose-color">
