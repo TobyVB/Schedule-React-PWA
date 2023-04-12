@@ -13,7 +13,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<SharedLayout />}>
       <Route index element={<Login />} />
-      <Route path="/schedule/:email" element={<Schedule />}></Route>
+      <Route path="/schedule/:id" element={<Schedule />}></Route>
     </Route>
   )
 );

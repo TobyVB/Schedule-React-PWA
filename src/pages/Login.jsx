@@ -17,8 +17,8 @@ export default function Login() {
         localStorage.setItem("heLogin", email),
         localStorage.setItem("hePassword", password),
         users.practitioners.map((dr) => {
-          if (dr.email === email && dr.password === password) {
-            navigate(`schedule/${dr.email}`);
+          if (dr.email === email.toLowerCase() && dr.password === password) {
+            navigate(`schedule/${dr.id}`);
           }
         })
       ).then(() => {
@@ -31,6 +31,7 @@ export default function Login() {
       <h1>Login</h1>
       <div className="login-form">
         <input
+          type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           placeholder="email"

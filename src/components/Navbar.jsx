@@ -1,4 +1,4 @@
-import { UilPalette } from "@iconscout/react-unicons";
+import { UilPalette, UilEye } from "@iconscout/react-unicons";
 import { NavLink, useLocation } from "react-router-dom";
 export default function Navbar(props) {
   const location = useLocation();
@@ -11,18 +11,34 @@ export default function Navbar(props) {
           <p>healthengine</p>
         </div>
       </NavLink>
+
       {location.pathname.includes("schedule") && (
-        <div className="settings-container">
+        <div
+          style={{ display: "flex", alignItems: "center", marginTop: "8px" }}
+        >
           <div
+            className="settings"
             onClick={() =>
               props.setMgrState((prev) => ({
                 ...prev,
-                hideCC: !prev.hideCC,
+                regView: !prev.regView,
               }))
             }
-            className="settings"
           >
-            <UilPalette size="35px" />
+            <UilEye size="35" />
+          </div>{" "}
+          <div className="settings-container">
+            <div
+              onClick={() =>
+                props.setMgrState((prev) => ({
+                  ...prev,
+                  hideCC: !prev.hideCC,
+                }))
+              }
+              className="settings"
+            >
+              <UilPalette size="35px" />
+            </div>
           </div>
         </div>
       )}

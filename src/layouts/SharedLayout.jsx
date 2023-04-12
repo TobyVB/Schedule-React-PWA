@@ -12,7 +12,11 @@ export default function SharedLayout() {
       "#8AFFD6",
       "#78FFBB",
       "pink",
-      "salmon",
+      "#cdb4db",
+      "#ffc8dd",
+      "#ffafcc",
+      "#bde0fe",
+      "#a2d2ff",
     ],
     oColors: [
       "#79FAEB",
@@ -22,9 +26,14 @@ export default function SharedLayout() {
       "#8AFFD6",
       "#78FFBB",
       "pink",
-      "salmon",
+      "#cdb4db",
+      "#ffc8dd",
+      "#ffafcc",
+      "#bde0fe",
+      "#a2d2ff",
     ],
     hideCC: true,
+    regView: true,
   });
 
   return (

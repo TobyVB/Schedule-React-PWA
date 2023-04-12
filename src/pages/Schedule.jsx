@@ -6,17 +6,18 @@ import practitioners from "../../practitioners.js";
 import ColorChanger from "../components/ColorChanger.jsx";
 
 export default function Schedule() {
-  const { email } = useParams();
+  const { id } = useParams();
 
   const appointments = bookings.bookings.filter(
     (booking) =>
       booking.practitioner ===
-      practitioners.practitioners.filter((dr) => dr.email === email)[0].name
+      practitioners.practitioners.filter((dr) => dr.id === id)[0].name
   );
   const [mgrState, setMgrState] = useOutletContext();
 
   const [day, setDay] = useState(1);
   const [dayName, setDayName] = useState("Monday");
+  const [regView, setRegView] = useState(true);
 
   // console.log(mgrState.color1);
   useEffect(() => {
@@ -115,6 +116,29 @@ export default function Schedule() {
     }
   }
 
+  function MiniGap(props) {
+    const prev = props.prev;
+    const current = props.current;
+    const index = props.index;
+    const arrIndex = props.thisIndex;
+    if (index === 0 && current === 0) {
+      return;
+    } else if (index === 0 && current > 0) {
+      const gapSize = timeSize("getHour") * ((current * 1.666) / 100);
+      return <div style={{ height: `${gapSize}vh` }}></div>;
+    }
+    if (
+      arrAppointments[arrIndex].startTimeM ===
+      arrAppointments[arrIndex - 1].endTimeM
+    ) {
+      return;
+    }
+    if (prev < current) {
+      const gapSize = timeSize("getHour") * (((current - prev) * 1.666) / 100);
+      return <div style={{ height: `${gapSize}vh` }}>{props.thisIndex}</div>;
+    }
+  }
+
   function applyColor(type) {
     if (type === "Short Consultation") {
       return mgrState.colors[0];
@@ -136,91 +160,214 @@ export default function Schedule() {
     }
   }
 
+  function timeSize(dur) {
+    const hourSize = 100 / (endHour - startHour);
+    const taskSize = hourSize * ((dur * 1.666) / 100);
+    console.log("hour : " + hourSize + ", taskSize: " + taskSize);
+    if (dur === "getHour") {
+      return hourSize * 0.8;
+    } else {
+      return taskSize * 0.8;
+    }
+  }
+
   return (
     <>
       {!mgrState.hideCC && (
         <ColorChanger setMgrState={setMgrState} mgrState={mgrState} />
       )}
       <div>
-        <h1>Greetings, {appointments[0].practitioner}</h1>
+        {mgrState.regView && <h1>Greetings, {appointments[0].practitioner}</h1>}
 
         <div className="appointments">
-          <div className="day-selector">
-            <button
-              disabled={day === 1}
-              onClick={() => setDay((prev) => prev - 1)}
-            >
-              <UilAngleLeftB size="50px" />
-            </button>
+          {mgrState.regView ? (
+            <div className="day-selector">
+              <button
+                disabled={day === 1}
+                onClick={() => setDay((prev) => prev - 1)}
+              >
+                <UilAngleLeftB size="50px" />
+              </button>
 
-            <h1>{dayName}</h1>
-            <button
-              disabled={day === 7}
-              onClick={() => setDay((prev) => prev + 1)}
-            >
-              <UilAngleRightB size="50px" />
-            </button>
-          </div>
+              <h1>{dayName}</h1>
+              <button
+                disabled={day === 7}
+                onClick={() => setDay((prev) => prev + 1)}
+              >
+                <UilAngleRightB size="50px" />
+              </button>
+            </div>
+          ) : (
+            <div className="day-selector">
+              <button
+                disabled={day === 1}
+                onClick={() => setDay((prev) => prev - 1)}
+              >
+                <UilAngleLeftB size="40px" />
+              </button>
 
-          {dailyTimeIndex &&
-            dailyTimeIndex.map((ti, idx) => {
-              return (
-                <div key={idx} className="time-index">
-                  <div className="time-panel">
-                    <Time hour={8 + idx} minute={0} />
-                  </div>
-                  <div className="appointmentsInner">
-                    {arrAppointments
-                      .filter((elem) => elem.startTimeH === 8 + idx)
-                      .map((appointment, idx2) => {
-                        return (
-                          <>
-                            <Gap
-                              thisIndex={arrAppointments.findIndex(
-                                (obj) =>
-                                  obj.startTimeH === appointment.startTimeH &&
-                                  obj.startTimeM === appointment.startTimeM &&
-                                  obj.day === appointment.day
-                              )}
-                              prev={
-                                idx2 > 0 && arrAppointments[idx2 - 1].endTimeM
-                              }
-                              current={appointment.startTimeM}
-                              index={idx2}
-                              cp={appointment.patient}
-                              pp={
-                                idx2 > 0
-                                  ? arrAppointments[idx2 - 1].patient
-                                  : "no patient"
-                              }
-                            />
-                            <div
-                              className="appointment-container"
-                              style={{
-                                height: `${appointment.duration * 1.666 * 2}px`,
-                                width: "100%",
-                              }}
-                              key={idx2}
-                            >
+              <h1>{dayName}</h1>
+              <button
+                disabled={day === 7}
+                onClick={() => setDay((prev) => prev + 1)}
+              >
+                <UilAngleRightB size="40px" />
+              </button>
+            </div>
+          )}
+
+          {mgrState.regView
+            ? dailyTimeIndex &&
+              dailyTimeIndex.map((ti, idx) => {
+                return (
+                  <div key={idx} className="time-index">
+                    <div className="time-panel">
+                      <Time hour={8 + idx} minute={0} />
+                    </div>
+                    <div className="appointmentsInner">
+                      {arrAppointments
+                        .filter((elem) => elem.startTimeH === 8 + idx)
+                        .map((appointment, idx2) => {
+                          return (
+                            <>
+                              <Gap
+                                thisIndex={arrAppointments.findIndex(
+                                  (obj) =>
+                                    obj.startTimeH === appointment.startTimeH &&
+                                    obj.startTimeM === appointment.startTimeM &&
+                                    obj.day === appointment.day
+                                )}
+                                prev={
+                                  idx2 > 0 && arrAppointments[idx2 - 1].endTimeM
+                                }
+                                current={appointment.startTimeM}
+                                index={idx2}
+                                cp={appointment.patient}
+                                pp={
+                                  idx2 > 0
+                                    ? arrAppointments[idx2 - 1].patient
+                                    : "no patient"
+                                }
+                              />
                               <div
-                                className="appointment"
+                                className="appointment-container"
                                 style={{
-                                  background: applyColor(appointment.type),
+                                  height: `${
+                                    appointment.duration * 1.666 * 2
+                                  }px`,
+                                  width: "100%",
                                 }}
+                                key={idx2}
                               >
                                 <div
+                                  className="appointment"
                                   style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
+                                    background: applyColor(appointment.type),
                                   }}
                                 >
-                                  <span
+                                  <div
                                     style={{
                                       display: "flex",
-                                      gap: "1em",
+                                      justifyContent: "space-between",
                                     }}
                                   >
-                                    <p style={{ display: "flex" }}>
+                                    <span
+                                      style={{
+                                        display: "flex",
+                                        gap: "1em",
+                                      }}
+                                    >
+                                      <p style={{ display: "flex" }}>
+                                        <Time
+                                          hour={appointment.startTimeH}
+                                          minute={appointment.startTimeM}
+                                        />
+                                        -
+                                        <Time
+                                          hour={appointment.endTimeH}
+                                          minute={appointment.endTimeM}
+                                        />
+                                      </p>
+                                      <p>{appointment.type}</p>
+                                    </span>
+                                    <p>{appointment.patient}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })}
+                    </div>
+                  </div>
+                );
+              })
+            : dailyTimeIndex &&
+              dailyTimeIndex.map((ti, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      height: `${timeSize("getHour")}vh`,
+                    }}
+                  >
+                    <div className="time-panel-mini">
+                      <Time hour={startHour + idx} minute={0} />
+                    </div>
+
+                    <div className="appointmentsInner">
+                      {arrAppointments
+                        .filter((elem) => elem.startTimeH === startHour + idx)
+                        .map((appointment, idx2) => {
+                          return (
+                            <>
+                              <MiniGap
+                                thisIndex={arrAppointments.findIndex(
+                                  (obj) =>
+                                    obj.startTimeH === appointment.startTimeH &&
+                                    obj.startTimeM === appointment.startTimeM &&
+                                    obj.day === appointment.day
+                                )}
+                                prev={
+                                  idx2 > 0 && arrAppointments[idx2 - 1].endTimeM
+                                }
+                                current={appointment.startTimeM}
+                                index={idx2}
+                                cp={appointment.patient}
+                                pp={
+                                  idx2 > 0
+                                    ? arrAppointments[idx2 - 1].patient
+                                    : "no patient"
+                                }
+                              />
+                              <div
+                                className="appointment-container"
+                                style={{
+                                  height: `${timeSize(appointment.duration)}vh`,
+                                  width: "100%",
+                                }}
+                                key={idx2}
+                              >
+                                <div
+                                  className="appointmentMini"
+                                  style={{
+                                    background: applyColor(appointment.type),
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontSize: ".65rem",
+                                      lineHeight: "0",
+                                      fontWeight: "bold",
+                                      display: "flex",
+                                      gap: "3em",
+                                    }}
+                                  >
+                                    <p
+                                      style={{
+                                        display: "flex",
+                                        lineHeight: "0",
+                                      }}
+                                    >
                                       <Time
                                         hour={appointment.startTimeH}
                                         minute={appointment.startTimeM}
@@ -232,18 +379,44 @@ export default function Schedule() {
                                       />
                                     </p>
                                     <p>{appointment.type}</p>
-                                  </span>
-                                  <p>{appointment.patient}</p>
+                                  </div>
+
+                                  {/* <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                    }}
+                                  >
+                                    <span
+                                      style={{
+                                        display: "flex",
+                                        gap: "1em",
+                                      }}
+                                    >
+                                      <p style={{ display: "flex" }}>
+                                        <Time
+                                          hour={appointment.startTimeH}
+                                          minute={appointment.startTimeM}
+                                        />
+                                        -
+                                        <Time
+                                          hour={appointment.endTimeH}
+                                          minute={appointment.endTimeM}
+                                        />
+                                      </p>
+                                      <p>{appointment.type}</p>
+                                    </span>
+                                    <p>{appointment.patient}</p>
+                                  </div> */}
                                 </div>
                               </div>
-                            </div>
-                          </>
-                        );
-                      })}
+                            </>
+                          );
+                        })}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
         </div>
       </div>
     </>
