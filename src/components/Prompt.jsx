@@ -19,13 +19,14 @@ export default function Prompt(props) {
   return (
     <div className="color-changer-container" style={{ padding: "2em 0" }}>
       <div className="color-changer" style={{ padding: "0 2em" }}>
+        <h3>Greetings, {props.practitioner.name}</h3>
         <p>
           You're day starts with a {props.data[0].type.toLowerCase()}, then a{" "}
           {props.data[1].type.toLowerCase()}.
         </p>
-        <div style={{ margin: "5em 0" }}>
-          {output.map((item) => {
-            return <p>{item}(s)</p>;
+        <div style={{ margin: "5em auto" }}>
+          {output.map((item, idx) => {
+            return <p key={idx}>{item}(s)</p>;
           })}
         </div>
 

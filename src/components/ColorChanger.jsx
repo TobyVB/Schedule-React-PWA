@@ -140,6 +140,7 @@ export default function ColorChanger(props) {
                 types.map((type, idx) => {
                   return (
                     <div
+                      key={idx}
                       className={
                         idx === 0
                           ? { firstType }

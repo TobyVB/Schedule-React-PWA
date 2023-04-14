@@ -1,4 +1,4 @@
-import { UilPalette, UilEye } from "@iconscout/react-unicons";
+import { UilPalette, UilEye, UilUser } from "@iconscout/react-unicons";
 import { NavLink, useLocation } from "react-router-dom";
 import { usePWAInstall } from "react-use-pwa-install";
 
@@ -29,7 +29,7 @@ export default function Navbar(props) {
               }))
             }
           >
-            <p>{props.mgrState.name}</p>
+            <UilUser />
           </div>
           <div
             className="settings"

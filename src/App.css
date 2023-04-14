@@ -30,9 +30,6 @@ a {
   margin-right: 1em;
   cursor: pointer;
 }
-.content {
-  margin: 0 2em;
-}
 h1 {
   color: rgb(8, 35, 37);
   text-align: center;
@@ -91,34 +88,6 @@ input {
 .day-selector button:disabled {
   color: rgba(0, 164, 182, 0.5);
 }
-
-.appointments {
-  background: white;
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  /* gap: 0.5em; */
-  padding: 0 0.5em;
-  /* width: 100%; */
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.appointmentsInner {
-  max-width: 550px;
-  margin: 0 auto;
-  overflow: visible;
-  flex-direction: column;
-  padding: 0 0;
-  width: 100%;
-  border-radius: 2px;
-}
-
-.appointment-container {
-  background: white;
-  display: flex;
-  /* justify-content: space-between; */
-}
 .time-index {
   height: 200px;
   font-size: 1.25rem;
@@ -127,55 +96,10 @@ input {
   display: flex;
   justify-content: stretch;
 }
-.time-panel-mini {
-  /* margin-top: -1rem; */
-  height: 1px;
-  width: 120%;
-  margin-left: -16%;
-  border-bottom: 1px solid rgba(0, 164, 182, 1);
-  z-index: 50;
-}
-.time-panel-mini span {
-  margin-top: -10px;
-}
-.appointment {
-  font-size: 16px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  padding: 0 0.5em;
-}
-.appointmentMini {
-  font-size: 16px;
-  /* background-color: rgb(220, 247, 247); */
-  text-align: center;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  margin: 0.025em 0;
-  padding: 0 0.5em;
-  flex: 1 1 auto;
-}
-.appointment p {
-  line-height: 0;
-}
-.appointmentMini p {
-  line-height: 0;
-  margin-top: 7px;
-}
-.break {
-  background-color: rgb(25, 205, 204);
-  color: white;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-}
-
 .color-changer-container {
   position: fixed;
   left: 50%;
-  top: 20%;
+  top: 10%;
   transform: translate(-50%, 0);
   width: 300px;
   background-color: rgba(255, 255, 255, 1);
@@ -185,6 +109,7 @@ input {
   z-index: 10;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  padding: 0 0 2em 0;
 }
 .color-changer {
   margin: auto auto;
@@ -211,7 +136,79 @@ input {
   padding: 1em 1.5em;
   border-radius: 5em;
 }
+.timePanel-container {
+  width: 100vw;
+  position: absolute;
+}
+@media screen and (min-width: 700px) {
+  .content {
+    margin: 0 2em;
+  }
+
+  .appointments {
+    background: white;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    /* gap: 0.5em; */
+    padding: 0 0.5em;
+    flex-grow: 1;
+  }
+  .appointment-container {
+    background: white;
+    display: flex;
+    /* justify-content: space-between; */
+  }
+  .appointment {
+    font-size: 16px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 0 0.5em;
+  }
+  .appointmentMini p {
+    line-height: 0;
+    margin-top: 7px;
+  }
+  .appointmentMini {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    margin: 0.025em 0;
+    padding: 0 0.5em;
+  }
+  .time-panel {
+    margin: 0 auto;
+    width: 650px;
+  }
+  .time-panel p {
+    margin-top: -10px;
+    margin-left: -50px;
+  }
+
+  .opt-2-container {
+    margin: 0 auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+  .appointmentsMini {
+    padding: 0 0em;
+    width: 85vw;
+    margin-left: auto;
+  }
+}
 @media screen and (max-width: 700px) {
+  .content {
+    margin: 0;
+  }
+  .opt-1-container {
+    margin: 0 2.5em;
+    margin-left: em;
+  }
+  .opt-2-container {
+    margin: 0 2.5em;
+    margin-left: em;
+  }
   h1 {
     font-size: 1rem;
   }
@@ -229,45 +226,67 @@ input {
     margin: auto 0;
     padding: 0;
   }
-  .appointment {
-    font-size: 0.75rem;
-    width: 100%;
-    margin: 0;
-  }
-  .appointments {
-    padding: 0 0em;
-    width: 85%;
-  }
-  .appointmentsInner {
-    max-width: 100vw;
-    margin: 0;
-    width: 100%;
-  }
-  .appointment-container {
-    padding: 0;
-    margin: 0;
-  }
-  .time-panel {
-    font-weight: bold;
-    font-size: 1rem;
-    margin-left: -17%;
-    margin-right: 7%;
-    z-index: 5;
-  }
-
   .color-changer-container {
     width: 70%;
     background-color: rgba(255, 255, 255, 1);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
   }
+  .logo-title img {
+    height: 35px;
+    /* margin: auto 0 auto 0.5em; */
+  }
   .logo-title p {
-    font-size: 1.1rem;
+    font-size: 0.85rem;
   }
   .login-container h1 {
     font-size: 2rem;
     color: rgba(0, 164, 182, 1);
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  }
+  .total-container {
+    background: white;
+    padding-top: 0.01em;
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+  .appointment {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* border-radius: 5px; */
+    font-size: 0.75rem;
+    margin: 0 -1.25em 0 2.25em;
+    padding: 0 0.5em;
+  }
+  .appointments {
+    width: 85vw;
+    margin-left: auto;
+  }
+  .appointmentsMini {
+    padding: 0 0em;
+    width: 85vw;
+    margin-left: auto;
+  }
+  .appointment-container {
+    padding: 0;
+    margin: 0;
+    width: 85vw;
+  }
+  .time-panel {
+    margin: -1px 0.5em 0 6vh;
+  }
+  .time-panel p {
+    margin-left: -5vh;
+    line-height: 0;
+    margin-top: -0.01rem;
+  }
+  .appointmentMini p {
+    line-height: 0;
+    margin-top: 7px;
+  }
+  .appointmentMini {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 -1.25em 0 2.25em;
+    padding: 0 0.5em;
   }
 }
 .types-color {
@@ -299,10 +318,4 @@ input {
   padding-top: 0.01em;
   max-width: 550px;
   margin: 0 auto;
-}
-.opt-2-container {
-  margin: 0 auto;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
 }

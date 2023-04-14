@@ -28,7 +28,7 @@ export default function Schedule() {
     setMgrState((prev) => {
       return { ...prev, name: practitioner.name };
     });
-  });
+  }, []);
 
   // This useEffect hook is triggered once initially.
   // It sets the 'dayName' to a value depending on the value of state 'day'.
@@ -68,8 +68,8 @@ export default function Schedule() {
     nowE.setMilliseconds(0);
 
     return (
-      <p style={{ display: "flex" }}>
-        <div>
+      <div style={{ display: "flex" }}>
+        <p>
           <span>
             {nowS.getHours() > 12 ? nowS.getHours() - 12 : nowS.getHours()}:
             {nowS.getMinutes() === 0 ? "00" : nowS.getMinutes()}
@@ -79,8 +79,8 @@ export default function Schedule() {
             {nowE.getHours() > 12 ? nowE.getHours() - 12 : nowE.getHours()}:
             {nowE.getMinutes() === 0 ? "00" : nowE.getMinutes()}
           </span>
-        </div>
-      </p>
+        </p>
+      </div>
     );
   }
   //
@@ -203,9 +203,9 @@ export default function Schedule() {
     const hourSize = 100 / (endHour - startHour);
     const taskSize = hourSize * ((dur * 1.666) / 100);
     if (dur === "getHour") {
-      return hourSize;
+      return hourSize * 0.8;
     } else {
-      return taskSize;
+      return taskSize * 0.8;
     }
   }
 
@@ -254,23 +254,21 @@ export default function Schedule() {
         {createWholeNumberArray().map((time, idx) => {
           return (
             <div
+              className="time-panel"
               key={idx}
               style={
                 !props.mini
                   ? {
-                      width: "58vw",
                       height: `${size}${unit}`,
-                      borderTop: "1px dashed rgba(0,0,0,.5)",
-                      marginTop: "-1px",
+                      borderTop: "1px solid rgb(0, 164, 182)",
                     }
                   : {
-                      width: "58vw",
                       height: `${size}${unit}`,
-                      borderTop: "1px dashed rgba(0,0,0,.5)",
+                      borderTop: "1px solid rgb(0, 164, 182)",
                     }
               }
             >
-              {time > 12 ? time - 12 : time}:00
+              <p>{time > 12 ? time - 12 : time}:00</p>
             </div>
           );
         })}
@@ -285,6 +283,7 @@ export default function Schedule() {
       )}
       {mgrState.prompt && (
         <Prompt
+          practitioner={practitioner}
           data={arrAppointments}
           setMgrState={setMgrState}
           mgrState={mgrState}
@@ -304,52 +303,45 @@ export default function Schedule() {
                   justifyContent: "center",
                 }}
               >
-                <div
-                  style={{
-                    marginLeft: "-50px",
-                    position: "absolute",
-                  }}
-                >
+                <div className="timePanel-container">
                   <TimePanel mini={false} />
                 </div>
-                <div className="appointments" style={{ flexGrow: "1" }}>
-                  <div className="appointmentsInner">
-                    {arrAppointments.map((appointment, idx) => {
-                      return (
-                        <>
-                          <Gap
-                            thisIndex={arrAppointments.findIndex(
-                              (obj) =>
-                                obj.startTimeH === appointment.startTimeH &&
-                                obj.startTimeM === appointment.startTimeM
-                            )}
-                            mini={false}
-                          />
-                          <div
-                            className="appointment"
+                <div className="appointments">
+                  {arrAppointments.map((appointment, idx) => {
+                    return (
+                      <div key={idx}>
+                        <Gap
+                          thisIndex={arrAppointments.findIndex(
+                            (obj) =>
+                              obj.startTimeH === appointment.startTimeH &&
+                              obj.startTimeM === appointment.startTimeM
+                          )}
+                          mini={false}
+                        />
+                        <div
+                          className="appointment"
+                          style={{
+                            background: applyColor(appointment.type),
+                            height: `${appointment.duration * 1.666 * 2}px`,
+                          }}
+                        >
+                          <span
                             style={{
-                              background: applyColor(appointment.type),
-                              height: `${appointment.duration * 1.666 * 2}px`,
+                              display: "flex",
+                              gap: "1em",
+                              justifyContent: "space-between",
                             }}
                           >
-                            <span
-                              style={{
-                                display: "flex",
-                                gap: "1em",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <span style={{ display: "flex", gap: "2em" }}>
-                                <Time booking={appointment} />
-                                <p>{appointment.type}</p>
-                              </span>
-                              <p>{appointment.patient}</p>
+                            <span style={{ display: "flex", gap: "2em" }}>
+                              <Time booking={appointment} />
+                              <p>{appointment.type}</p>
                             </span>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
+                            <p>{appointment.patient}</p>
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -360,60 +352,57 @@ export default function Schedule() {
             <div className="opt-2-container">
               <div
                 style={{
-                  height: `112vh`,
+                  height: `100vh`,
                   display: "flex",
                   justifyContent: "center",
                 }}
               >
                 <div
+                  className="timePanel-container"
                   style={{
                     marginTop: `-${
                       timeSize("getHour") * (createWholeNumberArray.length - 2)
                     }
                   }vh`,
-                    marginLeft: "-50px",
-                    position: "absolute",
                   }}
                 >
                   <TimePanel mini={true} />
                 </div>
-                <div className="appointments" style={{ flexGrow: "1" }}>
-                  <div className="appointmentsInner">
-                    {arrAppointments.map((appointment, idx) => {
-                      return (
-                        <>
-                          <Gap
-                            thisIndex={arrAppointments.findIndex(
-                              (obj) =>
-                                obj.startTimeH === appointment.startTimeH &&
-                                obj.startTimeM === appointment.startTimeM
-                            )}
-                            mini={true}
-                          />
+                <div className="appointmentsMini">
+                  {arrAppointments.map((appointment, idx) => {
+                    return (
+                      <div key={idx}>
+                        <Gap
+                          thisIndex={arrAppointments.findIndex(
+                            (obj) =>
+                              obj.startTimeH === appointment.startTimeH &&
+                              obj.startTimeM === appointment.startTimeM
+                          )}
+                          mini={true}
+                        />
+                        <div
+                          className="appointmentMini"
+                          style={{
+                            height: `${timeSize(appointment.duration)}vh`,
+                            background: applyColor(appointment.type),
+                          }}
+                        >
                           <div
-                            className="appointmentMini"
                             style={{
-                              height: `${timeSize(appointment.duration)}vh`,
-                              background: applyColor(appointment.type),
+                              fontSize: ".65rem",
+                              lineHeight: "0",
+                              fontWeight: "bold",
+                              display: "flex",
+                              gap: "3em",
                             }}
                           >
-                            <div
-                              style={{
-                                fontSize: ".65rem",
-                                lineHeight: "0",
-                                fontWeight: "bold",
-                                display: "flex",
-                                gap: "3em",
-                              }}
-                            >
-                              <Time booking={appointment} />
-                              <p>{appointment.type}</p>
-                            </div>
+                            <Time booking={appointment} />
+                            <p>{appointment.type}</p>
                           </div>
-                        </>
-                      );
-                    })}
-                  </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
