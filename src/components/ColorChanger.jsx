@@ -108,6 +108,7 @@ export default function ColorChanger(props) {
         </p>
         <div className="type-selector" style={{ display: "flex" }}>
           <button
+            name="change color left"
             disabled={centeredIndex === 0}
             onClick={() => scrollElement(-100)}
           >
@@ -159,6 +160,7 @@ export default function ColorChanger(props) {
             </div>
           </div>
           <button
+            name="change color right"
             disabled={centeredIndex === types.length - 1}
             onClick={() => scrollElement(100)}
           >
@@ -185,6 +187,7 @@ export default function ColorChanger(props) {
         {/* <input type="color"></input> */}
         <div className="color-btns-container">
           <button
+            name="cancel"
             onClick={() =>
               props.setMgrState((prev) => ({
                 ...prev,
@@ -197,6 +200,7 @@ export default function ColorChanger(props) {
           </button>
 
           <button
+            name="submit"
             onClick={() =>
               props.setMgrState((prev) => ({
                 ...prev,

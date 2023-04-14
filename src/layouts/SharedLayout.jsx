@@ -34,6 +34,7 @@ export default function SharedLayout() {
     ],
     hideCC: true,
     regView: true,
+    prompt: false,
   });
 
   return (
