@@ -256,17 +256,10 @@ export default function Schedule() {
             <div
               className="time-panel"
               key={idx}
-              style={
-                !props.mini
-                  ? {
-                      height: `${size}${unit}`,
-                      borderTop: "1px solid rgb(0, 164, 182)",
-                    }
-                  : {
-                      height: `${size}${unit}`,
-                      borderTop: "1px solid rgb(0, 164, 182)",
-                    }
-              }
+              style={{
+                height: `${size}${unit}`,
+                borderTop: "1px solid rgb(0, 164, 182)",
+              }}
             >
               <p>{time > 12 ? time - 12 : time}:00</p>
             </div>

@@ -180,6 +180,11 @@ input {
     margin: 0 auto;
     width: 650px;
   }
+  .opt-1-container .time-panel {
+    margin: 0 auto;
+    width: 650px;
+    margin-top: -1px;
+  }
   .time-panel p {
     margin-top: -10px;
     margin-left: -50px;
@@ -253,7 +258,6 @@ input {
     margin-left: auto;
   }
   .appointmentsMini {
-    padding: 0 0em;
     width: 85vw;
     margin-left: auto;
   }
@@ -285,6 +289,7 @@ input {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     margin: 0 -1.25em 0 2.25em;
     padding: 0 0.5em;
+    font-size: 0.75rem;
   }
 }
 .types-color {
