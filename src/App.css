@@ -107,8 +107,6 @@ input {
   border-radius: 5px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
   z-index: 10;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
   padding: 0 0 2em 0;
 }
 .color-changer {
@@ -124,7 +122,7 @@ input {
 .color-btns-container {
   display: flex;
   justify-content: center;
-  gap: 2em;
+  gap: 1em;
   padding: 0 1em;
 }
 .color-btns-container button {
@@ -230,7 +228,7 @@ input {
     padding: 0;
   }
   .color-changer-container {
-    width: 70%;
+    width: 80%;
     background-color: rgba(255, 255, 255, 1);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);

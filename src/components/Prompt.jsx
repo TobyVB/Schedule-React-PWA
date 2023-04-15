@@ -47,7 +47,7 @@ export default function Prompt(props) {
 
   return (
     <div className="color-changer-container" style={{ padding: "2em 0" }}>
-      <div className="color-changer" style={{ padding: "0 2em" }}>
+      <div className="color-changer" style={{ padding: "0 1em" }}>
         <h3>Greetings, {props.practitioner.name}</h3>
         <p>
           You're day starts with a {props.data[0].type.toLowerCase()}, then a{" "}
