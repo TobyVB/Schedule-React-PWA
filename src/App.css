@@ -27,7 +27,7 @@ a {
 .settings {
   color: rgb(25, 205, 204);
   font-size: 1.5rem;
-  margin-right: 1em;
+  /* margin-right: 1em; */
   cursor: pointer;
 }
 h1 {

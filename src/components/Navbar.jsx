@@ -1,4 +1,9 @@
-import { UilPalette, UilEye, UilUser } from "@iconscout/react-unicons";
+import {
+  UilPalette,
+  UilEye,
+  UilUser,
+  UilDownloadAlt,
+} from "@iconscout/react-unicons";
 import { NavLink, useLocation } from "react-router-dom";
 import { usePWAInstall } from "react-use-pwa-install";
 
@@ -17,9 +22,17 @@ export default function Navbar(props) {
 
       {location.pathname.includes("schedule") && (
         <div
-          style={{ display: "flex", alignItems: "center", marginTop: "8px" }}
+          style={{
+            gap: "1em",
+            display: "flex",
+            alignItems: "center",
+            marginTop: "8px",
+            marginRight: "1em",
+          }}
         >
-          {/* {<button onClick={install}>Install</button>} */}
+          <div className="settings" onClick={install}>
+            <UilDownloadAlt />
+          </div>
           <div
             className="settings"
             onClick={() =>
@@ -40,7 +53,7 @@ export default function Navbar(props) {
               }))
             }
           >
-            <UilEye size="35" />
+            <UilEye />
           </div>{" "}
           <div className="settings-container">
             <div
@@ -52,7 +65,7 @@ export default function Navbar(props) {
               }
               className="settings"
             >
-              <UilPalette size="35px" />
+              <UilPalette />
             </div>
           </div>
         </div>
