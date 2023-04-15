@@ -1,4 +1,7 @@
+import { useState } from "react";
+import Say from "react-say";
 export default function Prompt(props) {
+  const [speak, setSpeak] = useState(false);
   const filteredData = [];
   const stringArr = props.data.map((booking) => {
     filteredData.push(booking.type);
@@ -15,6 +18,32 @@ export default function Prompt(props) {
   }, []);
 
   const output = result.map((item) => `${item.quantity} ${item.name}`);
+
+  function toggleSpeak() {
+    setSpeak((prev) => !prev);
+  }
+
+  const vocal = `Today you have ${output.map((item, idx) => {
+    return `${item}s, `;
+  })}`;
+
+  const vocal2 = `Your day starts with ${props.data.map((booking, idx) => {
+    const textStr = [];
+
+    if (idx === 1) {
+      textStr.push("then");
+    }
+    if (idx === props.data.length - 1) {
+      textStr.push("and");
+    }
+    textStr.push(
+      ` a ${booking.type} at ${
+        booking.startTimeH > 12 ? booking.startTimeH - 12 : booking.startTimeH
+      }:${booking.startTimeM == 0 ? "" : booking.startTimeM}`
+    );
+
+    return textStr;
+  })}`;
 
   return (
     <div className="color-changer-container" style={{ padding: "2em 0" }}>
@@ -42,6 +71,16 @@ export default function Prompt(props) {
           >
             cancel
           </button>
+          <button onClick={() => toggleSpeak()}>voice</button>
+          {speak && (
+            <Say
+              pitch={1.1}
+              rate={0.9}
+              speak="A quick brown fox jumped over the lazy dogs."
+              volume={0.8}
+              text={JSON.stringify(vocal2)}
+            />
+          )}
         </div>
       </div>
     </div>
