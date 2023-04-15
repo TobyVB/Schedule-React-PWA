@@ -5,11 +5,46 @@ import {
   UilDownloadAlt,
 } from "@iconscout/react-unicons";
 import { NavLink, useLocation } from "react-router-dom";
-import { usePWAInstall } from "react-use-pwa-install";
 
 export default function Navbar(props) {
-  const install = usePWAInstall();
   const location = useLocation();
+
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [downloadVisible, setDownloadVisible] = useState(false);
+
+  function showAddToHomeScreenButton() {
+    setDownloadVisible(true);
+  }
+
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+    };
+  }, []);
+
+  function handleBeforeInstallPrompt(e) {
+    e.preventDefault();
+    setDeferredPrompt(e);
+    showAddToHomeScreenButton();
+  }
+
+  function addToHomeScreen() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User added to home screen");
+        } else {
+          console.log("User did not add to home screen");
+        }
+        setDeferredPrompt(null);
+      });
+    }
+  }
 
   return (
     <div className="navbar">
@@ -30,9 +65,11 @@ export default function Navbar(props) {
             marginRight: "1em",
           }}
         >
-          <div className="settings" onClick={install}>
-            <UilDownloadAlt />
-          </div>
+          {downloadVisible && (
+            <div className="settings" onClick={() => addToHomeScreen()}>
+              <UilDownloadAlt onClick />
+            </div>
+          )}
           <div
             className="settings"
             onClick={() =>

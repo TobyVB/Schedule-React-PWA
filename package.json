@@ -12,8 +12,7 @@
     "@iconscout/react-unicons": "github:iconscout/react-unicons",
     "html-react-parser": "^3.0.15",
     "react-router-dom": "^6.10.0",
-    "react-say": "^2.1.0",
-    "react-use-pwa-install": "^0.2.4"
+    "react-say": "^2.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
