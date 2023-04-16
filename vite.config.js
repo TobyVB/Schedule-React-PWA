@@ -9,14 +9,14 @@ export default defineConfig({
       manifest: {
         icons: [
           {
-            src: "/icons/he-logo250.png",
-            sizes: "250x250",
+            src: "/icons/manifest-icon-192.maskable.png",
+            sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "/icons/he-logo640x554.png",
-            sizes: "640x554",
+            src: "/icons/manifest-icon-512.maskable.png",
+            sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
           },

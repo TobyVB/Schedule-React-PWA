@@ -51,8 +51,12 @@ export default function Navbar(props) {
     <div className="navbar">
       <NavLink to="/">
         <div className="logo-title">
-          <img alt="logo" className="logo" src="../../he-logo.png" />
-          <p>healthengine</p>
+          <img
+            alt="logo"
+            className="logo"
+            src="../../icons/manifest-icon-512.maskable.png"
+          />
+          <p>Schedule</p>
         </div>
       </NavLink>
 
