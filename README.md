@@ -34,3 +34,14 @@
 </ul>
 
 <hr margin-bottom="2em"/>
+<img height="300px" alt="Screenshot 2023-04-17 at 3 37 35 PM" src="https://user-images.githubusercontent.com/98196156/232417728-4baead7f-0a4d-42a0-91d7-c338424af5d3.png">
+<img height="300px" alt="Screenshot 2023-04-17 at 3 37 55 PM" src="https://user-images.githubusercontent.com/98196156/232417761-58ea5f68-b89e-4b0c-9d47-0841a1f79e1b.png">
+<img height="300px" alt="Screenshot 2023-04-17 at 3 38 11 PM" src="https://user-images.githubusercontent.com/98196156/232417793-972be4ad-5623-4f93-916d-93a34f210673.png">
+<img height="300px" alt="Screenshot 2023-04-17 at 3 38 28 PM" src="https://user-images.githubusercontent.com/98196156/232417831-9b8c46bc-f103-4e7f-820d-087cbb552ed7.png">
+<img height="300px" alt="Screenshot 2023-04-17 at 3 38 38 PM" src="https://user-images.githubusercontent.com/98196156/232417856-e5c2f2a9-6f7c-4064-b6c0-1d72147a77ed.png">
+
+<div display="flex" >
+<img height="300px" alt="Screenshot" src="https://user-images.githubusercontent.com/98196156/232419444-753b9db0-004d-4557-905d-76a16fb9ef58.jpeg">
+
+<img height="300px" alt="Screenshot" src="https://user-images.githubusercontent.com/98196156/232419665-4bf314d4-02ab-4093-800b-efac548f5268.jpeg">
+</div>
